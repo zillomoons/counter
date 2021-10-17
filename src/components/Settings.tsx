@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 import {Button} from "./Button";
-import './App.css'
+import '../App.css'
+import {NumberInput} from "./NumberInput";
 
 type PropsType = {
     startValue: number
@@ -10,7 +11,8 @@ type PropsType = {
     setInitValue: () => void
 }
 
-export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInitValue, ...props}: PropsType) => {
+export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInitValue}: PropsType) => {
+    const [disable, setDisable] = useState<boolean>(false)
     const onClickHandler = () => {
         setInitValue();
         setDisable(true);
@@ -25,7 +27,6 @@ export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInit
     }
     const errorMin = startValue < 0
     const errorMax = maxValue < startValue + 1
-    const [disable, setDisable] = useState<boolean>(false)
 
     return (
         <div className={'settings'}>
@@ -35,14 +36,8 @@ export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInit
                     <div>start value: </div>
                 </div>
                 <div className={'inputNumber'}>
-                    <input type={'number'}
-                           value={maxValue}
-                           onChange={onChangeMaxHandler}
-                           className={errorMax ? 'errorInput' : 'defaultInput'}/>
-                    <input type={'number'}
-                           value={startValue}
-                           onChange={onChangeMinHandler}
-                           className={errorMin || errorMax ? 'errorInput' : 'defaultInput'}/>
+                    <NumberInput value={maxValue} onChange={onChangeMaxHandler} error={errorMax} />
+                    <NumberInput value={startValue} onChange={onChangeMinHandler} error={errorMax || errorMin} />
                 </div>
             </div>
             <div className={'setButton'}>
