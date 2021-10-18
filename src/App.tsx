@@ -14,10 +14,8 @@ function App() {
         let startValueAsString = localStorage.getItem('startValue');
         let maxValueAsString = localStorage.getItem('maxValue');
         if (startValueAsString && maxValueAsString){
-            let newStartValue = JSON.parse(startValueAsString);
-            setStartValue(newStartValue);
-            let newMaxValue = JSON.parse(maxValueAsString);
-            setMaxValue(newMaxValue);
+            setStartValue(JSON.parse(startValueAsString));
+            setMaxValue(JSON.parse(maxValueAsString));
         }
     }, [])
 
