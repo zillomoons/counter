@@ -19,10 +19,10 @@ function App() {
         }
     }, [])
 
-    useEffect(()=> {
-        localStorage.setItem('startValue', JSON.stringify(startValue))
-        localStorage.setItem('maxValue', JSON.stringify(maxValue))
-    }, [startValue, maxValue])
+    // useEffect(()=> {
+    //     localStorage.setItem('startValue', JSON.stringify(startValue))
+    //     localStorage.setItem('maxValue', JSON.stringify(maxValue))
+    // }, [startValue, maxValue])
 
     const addMinValue = (min: number) => {
         setStartValue(min);
@@ -38,7 +38,9 @@ function App() {
 
     const setInitValue = () => {
         setCount(startValue);
-        setShowCount(true)
+        setShowCount(true);
+        localStorage.setItem('startValue', JSON.stringify(startValue))
+        localStorage.setItem('maxValue', JSON.stringify(maxValue))
     }
 
     return (
