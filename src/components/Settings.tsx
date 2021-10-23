@@ -2,16 +2,16 @@ import React, {ChangeEvent, useState} from "react";
 import {Button} from "./Button";
 import '../App.css'
 import {NumberInput} from "./NumberInput";
+import {StateType} from "../App";
 
 type PropsType = {
-    startValue: number
-    maxValue: number
-    addMinValue: (min: number)=>void
-    addMaxValue:(max: number)=>void
+    state: StateType
+    addMinValue: (min: number) => void
+    addMaxValue: (max: number) => void
     setInitValue: () => void
 }
 
-export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInitValue}: PropsType) => {
+export const Settings = ({state, addMaxValue, addMinValue, setInitValue}: PropsType) => {
     const [disable, setDisable] = useState<boolean>(false)
     const onClickHandler = () => {
         setInitValue();
@@ -25,19 +25,19 @@ export const Settings = ({startValue,maxValue, addMaxValue, addMinValue, setInit
         addMinValue(Number(e.currentTarget.value));
         setDisable(false);
     }
-    const errorMin = startValue < 0
-    const errorMax = maxValue < startValue + 1
+    const errorMin = state.startValue < 0
+    const errorMax = state.maxValue < state.startValue + 1
 
     return (
         <div className={'settings'}>
             <div className={'setDisplay'}>
                 <div className={'initValue'}>
-                    <div>max value: </div>
-                    <div>start value: </div>
+                    <div>max value:</div>
+                    <div>start value:</div>
                 </div>
                 <div className={'inputNumber'}>
-                    <NumberInput value={maxValue} onChange={onChangeMaxHandler} error={errorMax} />
-                    <NumberInput value={startValue} onChange={onChangeMinHandler} error={errorMax || errorMin} />
+                    <NumberInput value={state.maxValue} onChange={onChangeMaxHandler} error={errorMax}/>
+                    <NumberInput value={state.startValue} onChange={onChangeMinHandler} error={errorMax || errorMin}/>
                 </div>
             </div>
             <div className={'setButton'}>

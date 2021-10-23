@@ -1,59 +1,65 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import './App.css';
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
+import {ChangeMaxValueAC, ChangeStartValueAC, CounterReducer, ShowCountAC} from "./state/CounterReducer";
 
+
+export type StateType = {
+    startValue: number
+    maxValue: number
+    showCount: boolean
+}
 
 function App() {
-    const [startValue, setStartValue] = useState<number>(0)
-    const [maxValue, setMaxValue] = useState<number>(5)
-    const [showCount,setShowCount] = useState<boolean>(false);
-    const [count, setCount] = useState<number>(startValue)
 
-    useEffect(()=> {
+    const [state, dispatchState] = useReducer(CounterReducer, {
+        startValue: 0,
+        maxValue: 5,
+        showCount: false,
+    })
+    const [count, setCount] = useState<number>(state.startValue)
+
+    useEffect(() => {
         let startValueAsString = localStorage.getItem('startValue');
         let maxValueAsString = localStorage.getItem('maxValue');
-        if (startValueAsString && maxValueAsString){
-            setStartValue(JSON.parse(startValueAsString));
-            setMaxValue(JSON.parse(maxValueAsString));
+        if (startValueAsString && maxValueAsString) {
+            dispatchState(ChangeStartValueAC(JSON.parse(startValueAsString)))
+            dispatchState(ChangeMaxValueAC(JSON.parse(maxValueAsString)))
+            // setState({...state, startValue: JSON.parse(startValueAsString), maxValue: JSON.parse(maxValueAsString)})
         }
     }, [])
 
-    // useEffect(()=> {
-    //     localStorage.setItem('startValue', JSON.stringify(startValue))
-    //     localStorage.setItem('maxValue', JSON.stringify(maxValue))
-    // }, [startValue, maxValue])
-
     const addMinValue = (min: number) => {
-        setStartValue(min);
-        setShowCount(false);
+        dispatchState(ChangeStartValueAC(min))
+        dispatchState(ShowCountAC(false))
+        // setState({...state, startValue: min, showCount: false})
     }
     const addMaxValue = (max: number) => {
-        setMaxValue(max);
-        setShowCount(false);
+        dispatchState(ChangeMaxValueAC(max))
+        dispatchState(ShowCountAC(false))
+        // setState({...state, maxValue: max, showCount: false})
     }
-    const incrementCount = () => count < maxValue && setCount(count + 1)
+    const incrementCount = () => count < state.maxValue && setCount(count + 1)
 
-    const resetCount = () => setCount(startValue);
+    const resetCount = () => setCount(state.startValue);
 
     const setInitValue = () => {
-        setCount(startValue);
-        setShowCount(true);
-        localStorage.setItem('startValue', JSON.stringify(startValue))
-        localStorage.setItem('maxValue', JSON.stringify(maxValue))
+        setCount(state.startValue);
+        dispatchState(ShowCountAC(true))
+        //setState({...state, showCount: true})
+        localStorage.setItem('startValue', JSON.stringify(state.startValue))
+        localStorage.setItem('maxValue', JSON.stringify(state.maxValue))
     }
 
     return (
         <div className="App">
-            <Settings startValue={startValue}
-                      maxValue={maxValue}
+            <Settings state={state}
                       setInitValue={setInitValue}
                       addMinValue={addMinValue}
                       addMaxValue={addMaxValue}/>
             <Counter count={count}
-                     showCount={showCount}
-                     startValue={startValue}
-                     maxValue={maxValue}
+                     state={state}
                      reset={resetCount}
                      incCount={incrementCount}/>
         </div>

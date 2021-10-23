@@ -1,30 +1,27 @@
 import React from 'react';
 import '../App.css';
 import {Button} from './Button';
+import {StateType} from "../App";
 
 type PropsType = {
     count: number
     incCount: () => void
     reset: () => void
-    startValue: number
-    maxValue: number
-    showCount: boolean
+    state: StateType
 }
-export const Counter = ({count, incCount, reset, startValue, maxValue, showCount}: PropsType) => {
-    const error = (startValue < 0) || (maxValue < startValue + 1)
+export const Counter = ({count, incCount, reset, state}: PropsType) => {
+    const error = (state.startValue < 0) || (state.maxValue < state.startValue + 1)
     return (
         <div className='counter'>
             <div className='countDisplay'>
-                <div>
-                    {!error && showCount &&
-                    <div className={count === maxValue ? 'numberFinal' : 'numberDefault'}>{count}</div>}
-                    {!error && !showCount && <div className={'intro'}>enter values and press 'set'</div>}
-                    {error && <div className={'errorMessage'}>incorrect value!</div>}
-                </div>
+                {!error && state.showCount &&
+                <div className={count === state.maxValue ? 'numberFinal' : 'numberDefault'}>{count}</div>}
+                {!error && !state.showCount && <div className={'intro'}>enter values and press 'set'</div>}
+                {error && <div className={'errorMessage'}>incorrect value!</div>}
             </div>
             <div className='buttons'>
-                <Button name={'inc'} disabled={showCount && count === maxValue} callback={incCount}/>
-                <Button name={'reset'} disabled={count === startValue} callback={reset}/>
+                <Button name={'inc'} disabled={state.showCount && count === state.maxValue} callback={incCount}/>
+                <Button name={'reset'} disabled={count === state.startValue} callback={reset}/>
             </div>
         </div>
     );
