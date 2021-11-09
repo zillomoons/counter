@@ -5,7 +5,7 @@ export const saveState = (state: AppStateType) => {
         const serializedState = JSON.stringify(state);
         localStorage.setItem('app_state', serializedState);
     } catch {
-        throw Error('something went wrong');
+        throw new Error('something went wrong');
     }
 };
 
