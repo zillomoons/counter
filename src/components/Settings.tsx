@@ -2,15 +2,15 @@ import React, {ChangeEvent, useState} from "react";
 import {Button} from "./Button";
 import '../App.css'
 import {NumberInput} from "./NumberInput";
-import {setMaxValueTC, setMinValueTC, setInitValuesTC, StateType} from "../bll/CounterReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../bll/store";
+import {setInitValuesTC, setMaxValueTC, setMinValueTC, SettingsStateType} from "../bll/SettingsReducer";
 
 
 
 export const Settings = () => {
-    const state = useSelector<AppStateType, StateType>(state=>state.counter);
-    const {maxValue, startValue} = state;
+    const settingsState = useSelector<AppStateType, SettingsStateType>(state=>state.settings);
+    const {maxValue, startValue} = settingsState;
     const dispatch = useDispatch();
 
     const [disable, setDisable] = useState<boolean>(false);

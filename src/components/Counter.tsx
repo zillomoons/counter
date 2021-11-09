@@ -1,14 +1,17 @@
 import React from 'react';
 import '../App.css';
 import {Button} from './Button';
-import {setCountAC, StateType} from "../bll/CounterReducer";
+import {setCountAC, CounterStateType} from "../bll/CounterReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../bll/store";
+import {SettingsStateType} from "../bll/SettingsReducer";
 
 
 export const Counter = () => {
-    const state = useSelector<AppStateType, StateType>(state=>state.counter);
-    const {count, showCount, maxValue, startValue} = state;
+    const counterState = useSelector<AppStateType, CounterStateType>(state=>state.counter);
+    const settingsState = useSelector<AppStateType, SettingsStateType>(state=>state.settings);
+    const {count, showCount} = counterState;
+    const {startValue, maxValue} = settingsState;
     const dispatch = useDispatch();
     const incCount = () => dispatch(setCountAC(count +1));
     const resetCount = () => dispatch(setCountAC(startValue));
